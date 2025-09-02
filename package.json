@@ -1,15 +1,15 @@
 {
   "name": "mcp-mssql-server",
   "version": "1.0.0",
+  "description": "MCP server for MS SQL",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
+    "start": "node server.js",
+    "test": "echo \"No tests defined\""
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": "",
   "dependencies": {
     "body-parser": "^2.2.0",
     "dotenv": "^17.2.1",
