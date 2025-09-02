@@ -7,19 +7,17 @@ const app = express();
 app.use(bodyParser.json());
 
 // SQL Config
-
 const dbConfig = {
-  user: "sqladmin",
-  password: "Wind0wsazure@123",
-  server: "sqltpt.database.windows.net",
-  database: "NorthWinds Updated",
-  port: 1433,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  server: process.env.DB_SERVER,
+  database: process.env.DB_DATABASE,
+  port: parseInt(process.env.DB_PORT, 10),
   options: {
     encrypt: true,
     trustServerCertificate: true
   }
 };
-
 
 // MCP Metadata
 const MCP_METADATA = {
@@ -60,6 +58,25 @@ app.post('/tools/executeQuery', async (req, res) => {
     console.error(err);
     res.status(500).json({ error: err.message });
   }
+});
+
+// SSE Endpoint for MCP compatibility
+app.get('/sse', (req, res) => {
+  res.setHeader('Content-Type', 'text/event-stream');
+  res.setHeader('Cache-Control', 'no-cache');
+  res.setHeader('Connection', 'keep-alive');
+
+  const sessionId = req.query.sessionId || 'default-session';
+  res.write(`data: ${JSON.stringify({ sessionId, message: 'SSE connection established' })}\n\n`);
+
+  const interval = setInterval(() => {
+    res.write(`data: ${JSON.stringify({ sessionId, ping: new Date().toISOString() })}\n\n`);
+  }, 15000);
+
+  req.on('close', () => {
+    clearInterval(interval);
+    res.end();
+  });
 });
 
 const PORT = process.env.PORT || 3000;
