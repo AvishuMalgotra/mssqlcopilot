@@ -13,10 +13,10 @@ app.use(cors());
 
 // SQL Config
 const dbConfig = {
-  user: process.env.DB_USER,
-  password: process.env.DB_PASSWORD,
-  server: process.env.DB_SERVER,
-  database: process.env.DB_DATABASE,
+  user: "sqladmin",
+  password: "Wind0wsazure@123",
+  server: "sqltpt.database.windows.net",
+  database: "NorthWinds Updated",
   port: parseInt(process.env.DB_PORT || "1433", 10),
   options: {
     encrypt: true,
