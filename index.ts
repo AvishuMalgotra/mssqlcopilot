@@ -72,8 +72,8 @@ server.tool("execute-sql-query", "Execute a SQL query", async ({ query }) => {
 // SSE Transport Registry
 const transports: { [sessionId: string]: SSEServerTransport } = {};
 
-// SSE Endpoint
-app.get("/sse", async (req: Request, res: Response) => {
+// ✅ Renamed SSE Endpoint to avoid conflict
+app.get("/stream", async (req: Request, res: Response) => {
   const host = req.get("host");
   const fullUri = `https://${host}/sql`;
   const transport = new SSEServerTransport(fullUri, res);
@@ -87,7 +87,7 @@ app.get("/sse", async (req: Request, res: Response) => {
   await server.connect(transport);
 });
 
-// POST Endpoint for tool execution
+// Tool Execution Endpoint
 app.post("/sql", async (req: Request, res: Response) => {
   const sessionId = req.query.sessionId as string;
   const transport = transports[sessionId];
